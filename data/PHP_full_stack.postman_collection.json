@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "2fbf49c9-758e-429c-98a9-74970be9418b",
+		"name": "PHP_full_stack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11628453"
+	},
+	"item": [
+		{
+			"name": "getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/movies",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resetdatabase",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/movies/resetdatabase",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"movies",
+						"resetdatabase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "phpinfoExtensions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/movies/phpinfoextensions",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"movies",
+						"phpinfoextensions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -63,4 +63,17 @@ class MovieController extends AbstractController
             Response::HTTP_OK
         );
     }
+
+    /**
+     * @Route("/phpinfoextensions")
+     */
+    public function phpinfoExtensions(MovieRepository $movieRepository)
+    {
+        return new JsonResponse(
+            [
+                phpinfo(INFO_MODULES)
+            ],
+            Response::HTTP_OK
+        );
+    }
 }
