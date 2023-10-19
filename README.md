@@ -15,7 +15,7 @@ A message will appear:
 
 ![image](https://github.com/Dionmax/php_fullstack_backend/assets/28550074/f33e3ff2-cba7-4718-87b7-ca3acf2efd68)
 
-This number indicates where the synfony server is running, if it is not 127.0.0.1:8000 (localhost:8000), please change the postman environment variables (the postman workspace will be available here).
+#### This number indicates where the synfony server is running, if it is not 127.0.0.1:8000 (localhost:8000), please change the postman environment variables (the postman workspace will be available [here](https://github.com/Dionmax/php_fullstack_backend/tree/master/data)).
 
 
 ## Database
