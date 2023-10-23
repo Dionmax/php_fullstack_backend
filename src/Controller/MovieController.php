@@ -7,14 +7,13 @@ use App\Form\MovieType;
 use App\Repository\MovieRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route('/movies')]
+#[Route('/api/movies')]
 class MovieController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -24,7 +23,7 @@ class MovieController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/', methods: 'GET')]
+    #[Route('/all', methods: 'GET')]
     public function getMovies(MovieRepository $movieRepository)
     {
         $data = $movieRepository->findAll();
@@ -37,7 +36,7 @@ class MovieController extends AbstractController
         );
     }
 
-    #[Route('/{id}', methods: 'GET')]
+    #[Route('/movie/{id}', methods: 'GET')]
     public function getMovie(MovieRepository $movieRepository, int $id)
     {
         $data = $movieRepository->findMovie($id);
@@ -56,8 +55,8 @@ class MovieController extends AbstractController
             );
     }
 
-    #[Route('', methods: 'POST')]
-    public function addMovie(MovieRepository $movieRepository, Request $request)
+    #[Route('/create', methods: 'POST')]
+    public function createMovie(MovieRepository $movieRepository, Request $request)
     {
 
         $movie = new Movie();
@@ -76,7 +75,7 @@ class MovieController extends AbstractController
         );
     }
 
-    #[Route('/{id}', methods: 'PUT')]
+    #[Route('/update/{id}', methods: 'PUT')]
     public function updateMovie(MovieRepository $movieRepository, int $id, Request $request)
     {
         $movie = $movieRepository->find($id);
@@ -106,7 +105,7 @@ class MovieController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/{id}', methods: 'DELETE')]
+    #[Route('/delete/{id}', methods: 'DELETE')]
     public function deleteMovie(MovieRepository $movieRepository, int $id)
     {
         $data = $movieRepository->findMovie($id);
@@ -126,6 +125,44 @@ class MovieController extends AbstractController
         }
     }
 
+    #[Route('/winners', methods: 'GET')]
+    public function getWinnerMinMaxMovies(MovieRepository $movieRepository)
+    {
+        $data = $movieRepository->findWinners();
+
+        $winners = array();
+
+        foreach ($data as $winner) {
+
+            $aux = array();
+
+            $aux['producer'] = $winner['producer'];
+
+            $temp = explode(',', $winner['year']);
+            arsort($temp, 1);
+
+            $aux['interval'] = $temp[1] - $temp[0];
+            $aux['previousWin'] = $temp[0];
+            $aux['followingWin'] = $temp[1];
+
+            $winners[] = $aux;
+        }
+
+        $comp = function ($a, $b) {
+            return ($a['interval'] > $b['interval']);
+        };
+
+        usort($winners, $comp);
+
+        return new JsonResponse(
+            [
+                'min' => $winners[0],
+                'max' => end($winners)
+            ],
+            Response::HTTP_OK
+        );
+    }
+
     //For debug only
     #[Route('/resetdatabase')]
     public function resetDatabase(MovieRepository $movieRepository)
@@ -140,17 +177,14 @@ class MovieController extends AbstractController
         array_shift($data);
 
         while ($row = fgetcsv($csvFile)) {
-            $raw = explode(';', $row[0]);
-
-            if (array_key_exists(4, $raw) and $raw[4] == 'yes')
-                $raw[4] = true;
+            $raw = explode(';', implode(',', $row));
 
             $data[] = $raw;
         }
 
-        fclose($csvFile);
-
         $movieRepository->deleteAndInsertData($data);
+
+        fclose($csvFile);
 
         return new JsonResponse(
             [

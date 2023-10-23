@@ -89,7 +89,7 @@ class Movie
 
     public function setWinner($winner): static
     {
-        $this->winner = $winner == 'yes';
+        $this->winner = $winner != '';
 
         return $this;
     }

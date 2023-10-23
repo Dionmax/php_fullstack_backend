@@ -27,13 +27,13 @@ class MovieRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         $batchSize = 20;
-        for ($i = 1; $i < sizeof($data); ++$i) {
+        for ($i = 0; $i < sizeof($data); ++$i) {
             $movie = new Movie();
             $movie->setYear($data[$i][0]);
             $movie->setTitle($data[$i][1]);
             $movie->setStudios(array_key_exists(2, $data[$i]) ? $data[$i][2] : '');
             $movie->setProducers(array_key_exists(3, $data[$i]) ? $data[$i][3] : '');
-            $movie->setWinner(array_key_exists(4, $data[$i]) ? $data[$i][4] : false);
+            $movie->setWinner(array_key_exists(4, $data[$i]) ? $data[$i][4] : '');
 
             $em->persist($movie);
 
@@ -71,15 +71,6 @@ class MovieRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function updateMovie($id): void
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $qb->update('App:Movie', 'm')
-            ->where($qb->expr()->eq('m.id', ':id'));
-
-    }
-
     /**
      * @throws Exception
      */
@@ -113,5 +104,27 @@ class MovieRepository extends ServiceEntityRepository
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         return $stmt->executeQuery([':id' => $id])->fetchAllAssociative();
+    }
+
+    public function findWinners()
+    {
+        $sql = <<<SQL
+                select group_concat(year) as year,
+                       group_concat(title) as title,
+                       producers as producer
+                from movie
+                where producers in (select producers
+                                    from (select producers,
+                                                 count(*) as c
+                                          from movie
+                                          where winner = 1
+                                          group by producers)
+                                    where c > 1)
+                group by producers
+                order BY year desc
+            SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 }
