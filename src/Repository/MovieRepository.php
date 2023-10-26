@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Movie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -103,7 +104,8 @@ class MovieRepository extends ServiceEntityRepository
                 SQL;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        return $stmt->executeQuery([':id' => $id])->fetchAllAssociative();
+        $stmt->bindValue(':id', $id, ParameterType::INTEGER);
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
     public function findWinners()
@@ -120,6 +122,7 @@ class MovieRepository extends ServiceEntityRepository
                                           where winner = 1
                                           group by producers)
                                     where c > 1)
+                and winner = 1
                 group by producers
                 order BY year desc
             SQL;
