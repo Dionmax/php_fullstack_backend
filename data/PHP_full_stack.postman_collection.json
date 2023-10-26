@@ -7,33 +7,17 @@
 	},
 	"item": [
 		{
-			"name": "getAll",
+			"name": "resetDatabase",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{localhost}}/movies",
+					"raw": "{{localhost}}/api/movies/resetdatabase",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
-						"movies"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "resetdatabase",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{localhost}}/movies/resetdatabase",
-					"host": [
-						"{{localhost}}"
-					],
-					"path": [
+						"api",
 						"movies",
 						"resetdatabase"
 					]
@@ -47,13 +31,149 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{localhost}}/movies/phpinfoextensions",
+					"raw": "{{localhost}}/api/movies/phpinfoextensions",
 					"host": [
 						"{{localhost}}"
 					],
 					"path": [
+						"api",
 						"movies",
 						"phpinfoextensions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/api/movies/all",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOne",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/api/movies/movie/2",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"movie",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteMovie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/api/movies/delete/1631",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"delete",
+						"1631"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"year\": 1980,\r\n    \"title\": \"Friday the 13th aaaaaa\",\r\n    \"studios\": \"Paramount Pictures\",\r\n    \"producers\": \"Sean S. Cunningham   aaaaa\",\r\n    \"winner\": \"yes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/api/movies/update/1223",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"update",
+						"1223"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddMovie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"year\": 1960,\r\n        \"title\": \"AAAA\",\r\n        \"studios\": \"Associated Film Distribution\",\r\n        \"producers\": \"Allan Carr\",\r\n        \"winner\": 1\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/api/movies/create",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Winners",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{localhost}}/api/movies/winners",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						"winners"
 					]
 				}
 			},
