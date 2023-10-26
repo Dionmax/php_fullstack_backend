@@ -17,6 +17,7 @@ A message will appear:
 
 #### This number indicates where the synfony server is running, if it is not 127.0.0.1:8000 (localhost:8000), please change the postman environment variables (the postman workspace will be available [here](https://github.com/Dionmax/php_fullstack_backend/tree/master/data)).
 
+##### To stop the server, run: `symfony server:stop`
 
 ## Database
 To change the database, change the `movielist.csv` file in the project's data folder, keeping the same name.
@@ -26,3 +27,7 @@ Then via the api call the route `http://localhost:8000/movies/resetdatabase`
 It was done this way to make it easier to change the database.
 
 The CSV is not being verified and I expect columns in the format: year, title, studios, producers, winner.
+
+## Test
+
+para executar os testes, rodar o comando: `php bin/phpunit` nside the project folder
