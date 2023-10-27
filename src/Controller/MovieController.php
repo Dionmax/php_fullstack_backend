@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,9 +25,17 @@ class MovieController extends AbstractController
     }
 
     #[Route('/all', methods: 'GET')]
-    public function getMovies(MovieRepository $movieRepository)
+    public function getMovies(
+        MovieRepository            $movieRepository,
+        #[MapQueryParameter] ?int  $page,
+        #[MapQueryParameter] ?int  $size,
+        #[MapQueryParameter] ?bool $winner,
+        #[MapQueryParameter] ?int  $year,
+    )
     {
-        $data = $movieRepository->findAll();
+        $param = ['page' => $page, 'size' => $size, 'winner' => $winner, 'year' => $year];
+
+        $data = $movieRepository->findAll($param);
 
         return new JsonResponse(
             [

@@ -50,7 +50,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{localhost}}/api/movies/all",
+					"raw": "{{localhost}}/api/movies/all?size=10&page=1",
 					"host": [
 						"{{localhost}}"
 					],
@@ -58,6 +58,31 @@
 						"api",
 						"movies",
 						"all"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "1985",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "winner",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "year",
+							"value": "1968",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -69,15 +94,35 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{localhost}}/api/movies/movie/2",
+					"raw": "https://tools.texoit.com/backend-java/api/movies?page=1&size=99&winner=&year=",
+					"protocol": "https",
 					"host": [
-						"{{localhost}}"
+						"tools",
+						"texoit",
+						"com"
 					],
 					"path": [
+						"backend-java",
 						"api",
-						"movies",
-						"movie",
-						"2"
+						"movies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "99"
+						},
+						{
+							"key": "winner",
+							"value": ""
+						},
+						{
+							"key": "year",
+							"value": ""
+						}
 					]
 				}
 			},

@@ -81,14 +81,19 @@ class MovieRepository extends ServiceEntityRepository
         $this->insertData($data);
     }
 
-    /**
-     * @throws Exception
-     */
-    public function findAll(): array
+    public function findAll($param = []): array
     {
-        $sql = <<<SQL
-                select * from movie order by id desc;
-                SQL;
+
+        $page = $param['page'] != null ? $param['page'] : 1;
+        $size = $param['size'] != null ? $param['size'] : 100;
+
+        $sql = "select * from movie where 1 = 1";
+
+        $sql .= $param['winner'] != null ? ' and winner = ' . $param['winner'] : '';
+
+        $sql .= $param['year'] != null ? ' and year = ' . $param['year'] : '';
+
+        $sql .= ' limit ' . $size . ' offset ' . ($page - 1) * $size;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         return $stmt->executeQuery()->fetchAllAssociative();
