@@ -38,9 +38,7 @@ class MovieController extends AbstractController
         $data = $movieRepository->findAll($param);
 
         return new JsonResponse(
-            [
-                $data
-            ],
+            $data,
             Response::HTTP_OK
         );
     }

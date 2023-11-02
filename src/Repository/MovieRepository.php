@@ -83,20 +83,35 @@ class MovieRepository extends ServiceEntityRepository
 
     public function findAll($param = []): array
     {
-
-        $page = $param['page'] != null ? $param['page'] : 1;
-        $size = $param['size'] != null ? $param['size'] : 100;
-
         $sql = "select * from movie where 1 = 1";
 
-        $sql .= $param['winner'] != null ? ' and winner = ' . $param['winner'] : '';
 
-        $sql .= $param['year'] != null ? ' and year = ' . $param['year'] : '';
+        if (array_key_exists('winner', $param) && $param['winner'] != null) {
+            $sql .= ' and winner = ' . $param['winner'];
+        }
 
-        $sql .= ' limit ' . $size . ' offset ' . ($page - 1) * $size;
+        if (array_key_exists('year', $param) && $param['year'] != null) {
+            $sql .= ' and year = ' . $param['year'];
+        }
+
+        if (array_key_exists('page', $param) && array_key_exists('size', $param)) {
+            $sql .= ' limit ' . $param['size'] . ' offset ' . ($param['page'] - 1) * $param['size'];
+        }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        return $stmt->executeQuery()->fetchAllAssociative();
+
+        $data = array();
+
+        $data['content'] = $stmt->executeQuery()->fetchAllAssociative();
+
+        if (array_key_exists('page', $param) && array_key_exists('size', $param)) {
+            $data['totalElements'] = $this->getEntityManager()->getConnection()->executeQuery('select count(*) from movie')->fetchOne();
+            $data['totalPages'] = ceil($data['totalElements'] / $param['size']);
+            $data['pageSize'] = $param['size'];
+            $data['pageNumber'] = $param['page'];
+        }
+
+        return $data;
     }
 
     /**
